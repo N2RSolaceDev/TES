@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Esports Scene - Coming Soon</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0d0d0d;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      scroll-behavior: smooth;
+    }
+
+    .container {
+      max-width: 600px;
+      padding: 40px 20px;
+      margin: 50px auto;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: #0f0;
+      text-shadow: 0 0 5px #0f0, 0 0 10px #0f0;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    .email-form {
+      margin-top: 30px;
+    }
+
+    input[type="email"] {
+      width: 70%;
+      padding: 12px;
+      margin-right: 10px;
+      background-color: #1a1a1a;
+      color: #0f0;
+      border: 2px solid #0f0;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: transparent;
+      color: #0f0;
+      border: 2px solid #0f0;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0f0;
+      color: #000;
+    }
+
+    .footer {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 40px;
+    }
+
+    a {
+      color: #0f0;
+      text-decoration: none;
+    }
+
+    .scroll-hint {
+      text-align: center;
+      font-size: 1rem;
+      color: #aaa;
+      margin-top: 60px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+
+    .purpose {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #1a1a1a;
+      border-left: 3px solid #0f0;
+      font-size: 0.95rem;
+      color: #ddd;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>The Esports Scene</h1>
+    <p>Coming soon — A safe space to expose doxxers, p3dos, trolls, and unethical teams in esports.</p>
+
+    <div class="purpose">
+      <strong>Purpose:</strong><br>
+      We're building a platform where players and fans can report toxic behavior — no personal info shared.<br><br>
+      Think someone deserves a spotlight for ruining communities? We’re listening.<br><br>
+      No logs • No ads • No nonsense.
+    </div>
+
+    <form id="emailForm" class="email-form">
+      <input type="email" id="email" placeholder="Enter your email to stay updated" required />
+      <button type="submit">Notify Me</button>
+    </form>
+
+    <div class="scroll-hint">↓ Stay Tuned ↓</div>
+  </div>
+
+  <p class="footer">
+    hosted at <a href="https://caught.wiki"  target="_blank">caught.wiki</a>
+  </p>
+
+  <script>
+    const form = document.getElementById('emailForm');
+    const emailInput = document.getElementById('email');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+
+      if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      try {
+        const res = await fetch('/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          alert("You've been added to the list!");
+          emailInput.value = '';
+        } else {
+          alert("Something went wrong. Try again later.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Could not connect to server.");
+      }
+    });
+  </script>
+</body>
+</html>
