@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>The Esports Scene - Coming Soon</title>
+  <title>The Esports Scene</title>
   <style>
     * {
       margin: 0;
@@ -44,40 +44,54 @@
       line-height: 1.6;
     }
 
-    .email-form {
-      margin-top: 30px;
-    }
-
-    input[type="email"] {
-      width: 70%;
-      padding: 12px;
-      margin-right: 10px;
+    .purpose {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
       background-color: #1a1a1a;
-      color: #0f0;
-      border: 2px solid #0f0;
-      border-radius: 4px;
-      font-family: inherit;
-      font-size: 1rem;
+      border-left: 3px solid #0f0;
+      font-size: 0.95rem;
+      color: #ddd;
+      line-height: 1.6;
+      text-align: left;
     }
 
-    button {
-      padding: 12px 20px;
-      background-color: transparent;
-      color: #0f0;
-      border: 2px solid #0f0;
-      cursor: pointer;
-      transition: background-color 0.3s, color 0.3s;
+    .exposed-section {
+      margin-top: 60px;
     }
 
-    button:hover {
-      background-color: #0f0;
-      color: #000;
+    .exposed-card {
+      background-color: #111;
+      border: 1px solid #0f0;
+      padding: 20px;
+      border-radius: 6px;
+      margin: 20px auto;
+      max-width: 500px;
+      text-align: left;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 5px #0f0; }
+      to { box-shadow: 0 0 15px #0f0; }
+    }
+
+    .exposed-card h2 {
+      color: #0f0;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .exposed-card p {
+      color: #ccc;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
     }
 
     .footer {
       font-size: 0.9rem;
       color: #555;
-      margin-top: 40px;
+      margin-top: 60px;
     }
 
     a {
@@ -97,17 +111,6 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(10px); }
     }
-
-    .purpose {
-      max-width: 600px;
-      margin: 30px auto;
-      padding: 20px;
-      background-color: #1a1a1a;
-      border-left: 3px solid #0f0;
-      font-size: 0.95rem;
-      color: #ddd;
-      line-height: 1.6;
-    }
   </style>
 </head>
 <body>
@@ -123,50 +126,24 @@
       No logs • No ads • No nonsense.
     </div>
 
-    <form id="emailForm" class="email-form">
-      <input type="email" id="email" placeholder="Enter your email to stay updated" required />
-      <button type="submit">Notify Me</button>
-    </form>
+    <!-- Exposed Individual Card -->
+    <section class="exposed-section">
+      <h2>Exposed by Solace</h2>
+
+      <div class="exposed-card">
+        <h2>Melt</h2>
+        <p><strong>Known for:</strong> Fraud, Doxxing, Abuse, P3do Behavior</p>
+        <p>Melt was a team owner who faked his income, lied about having a job, and used doxxing as leverage to control underage members. He targeted teenagers with threats and harassment to keep them in line or remove them from teams.</p>
+        <p>This abuse continued unchecked until he was publicly exposed by Solace, revealing years of manipulation and unethical conduct within competitive esports circles.</p>
+      </div>
+    </section>
 
     <div class="scroll-hint">↓ Stay Tuned ↓</div>
   </div>
 
   <p class="footer">
-    hosted at <a href="https://caught.wiki"  target="_blank">caught.wiki</a>
+    hosted at <a href="https://caught.wiki " target="_blank">caught.wiki</a>
   </p>
 
-  <script>
-    const form = document.getElementById('emailForm');
-    const emailInput = document.getElementById('email');
-
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const email = emailInput.value.trim();
-
-      if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-        alert("Please enter a valid email address.");
-        return;
-      }
-
-      try {
-        const res = await fetch('/subscribe', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
-        });
-
-        const data = await res.json();
-        if (data.success) {
-          alert("You've been added to the list!");
-          emailInput.value = '';
-        } else {
-          alert("Something went wrong. Try again later.");
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Could not connect to server.");
-      }
-    });
-  </script>
 </body>
 </html>
