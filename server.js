@@ -1,17 +1,17 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
 const app = express();
 
 // Use environment variables
-const PORT = process.env.PORT || 3000;
-const MONGO_URL = process.env.MONGO_URL; // Set this in your hosting environment
+const PORT = process.env.PORT ?? 3000;
+const MONGO_URL = process.env.MONGO_URL;
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(__dirname));
+app.use(express.static('public')); // Or whatever folder contains your static files
 
 // MongoDB Schema for Email Subscribers
 const emailSchema = new mongoose.Schema({
