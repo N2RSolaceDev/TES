@@ -7,19 +7,26 @@ const app = express();
 
 // Use environment variables
 const PORT = process.env.PORT || 3000;
-const MONGO_URL = process.env.MONGO_URL;
+const MONGO_URL = process.env.MONGO_URL; // Set this in your hosting environment
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
-// MongoDB Schema
+// MongoDB Schema for Email Subscribers
 const emailSchema = new mongoose.Schema({
   email: { type: String, unique: true, required: true },
   createdAt: { type: Date, default: Date.now }
 });
-
 const Email = mongoose.model('Email', emailSchema);
+
+// MongoDB Schema for Comments
+const commentSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  message: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+const Comment = mongoose.model('Comment', commentSchema);
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URL, {
@@ -49,7 +56,32 @@ app.post('/subscribe', async (req, res) => {
   }
 });
 
-// Start server
+// Post a Comment
+app.post('/comment', async (req, res) => {
+  const { email, message } = req.body;
+
+  try {
+    const newComment = new Comment({ email, message });
+    await newComment.save();
+    return res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: "Server error." });
+  }
+});
+
+// Fetch All Comments
+app.get('/comments', async (req, res) => {
+  try {
+    const comments = await Comment.find().sort({ createdAt: -1 });
+    return res.json(comments);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Could not fetch comments." });
+  }
+});
+
+// Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
