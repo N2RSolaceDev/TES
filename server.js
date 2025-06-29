@@ -1,90 +1,55 @@
-// server.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const path = require('path');
 
 const app = express();
 
-// Middleware
+// Use environment variables
+const PORT = process.env.PORT || 3000;
+const MONGO_URL = process.env.MONGO_URL;
+
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static(__dirname));
 
-// Serve static files from root directory
-app.use(express.static(path.join(__dirname, '.')));
+// MongoDB Schema
+const emailSchema = new mongoose.Schema({
+  email: { type: String, unique: true, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
 
-// MongoDB connection URL (set this in your environment variables)
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/esports_exposures';
+const Email = mongoose.model('Email', emailSchema);
 
+// Connect to MongoDB
 mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
-
-// Melt Schema and Model
-const meltSchema = new mongoose.Schema({
-  exposedBy: String,
-  name: String,
-  knownFor: [String],
-  description: String,
-  outcome: String,
-  dateExposed: { type: Date, default: Date.now }
+  useUnifiedTopology: true
+}).then(() => {
+  console.log("Connected to MongoDB");
+}).catch(err => {
+  console.error("MongoDB connection error:", err);
 });
 
-const Melt = mongoose.model('Melt', meltSchema);
+// Email Subscription Endpoint
+app.post('/subscribe', async (req, res) => {
+  const { email } = req.body;
 
-// Ianfv Schema and Model (Optional for future expansion)
-const ianfvSchema = new mongoose.Schema({
-  name: String,
-  discordId: String,
-  knownFor: [String],
-  description: String,
-  reportedAt: { type: Date, default: Date.now }
-});
-
-const Ianfv = mongoose.model('Ianfv', ianfvSchema);
-
-// Basic Route to serve index.html
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// Optional: API route to fetch exposed individuals
-app.get('/api/exposed/melts', async (req, res) => {
   try {
-    const melts = await Melt.find();
-    return res.json(melts);
+    const existing = await Email.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ success: false, message: "Already subscribed." });
+    }
+
+    await Email.create({ email });
+    return res.json({ success: true, message: "Subscribed!" });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: 'Failed to fetch exposed individuals' });
+    return res.status(500).json({ success: false, message: "Server error." });
   }
 });
 
-// Optional: Add test data via POST (for dev/testing only)
-app.post('/api/testdata', async (req, res) => {
-  const meltData = new Melt({
-    exposedBy: 'Solace',
-    name: 'Melt',
-    knownFor: ['Fraud', 'Doxxing', 'Abuse', 'P3do Behavior'],
-    description: 'Faked income, lied about job, used doxxing against underage players.',
-    outcome: 'Now in jail awaiting trial for armed robbery and battery.'
-  });
-
-  try {
-    await meltData.save();
-    return res.json({ success: true, message: 'Test data added!' });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Could not save test data.' });
-  }
-});
-
-// Start Server
-const PORT = process.env.PORT || 3000;
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
