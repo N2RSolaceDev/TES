@@ -145,13 +145,27 @@
     }
 
     .collapse-content {
-      overflow: hidden;
-      transition: max-height 0.4s ease-out;
+      overflow-y: auto;
       max-height: 0;
+      transition: max-height 0.4s ease-out;
     }
 
     .collapse-content.open {
       max-height: 500px; /* Adjust based on expected content height */
+    }
+
+    /* Optional scrollbar styling (for dark theme consistency) */
+    .collapse-content::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .collapse-content::-webkit-scrollbar-thumb {
+      background-color: #0f0;
+      border-radius: 4px;
+    }
+
+    .collapse-content::-webkit-scrollbar-track {
+      background-color: #1a1a1a;
     }
   </style>
 </head>
@@ -159,7 +173,7 @@
 
   <div class="container">
     <h1>The Esports Scene</h1>
-    <p> A safe space to expose doxxers, p3dos, trolls, and unethical teams in esports.</p>
+    <p>A safe space to expose doxxers, p3dos, trolls, and unethical teams in esports.</p>
 
     <div class="purpose">
       <strong>Purpose:</strong><br>
@@ -185,15 +199,19 @@
       <div class="exposed-card">
         <h2>Ianfv</h2>
         <p><strong>Discord ID:</strong> 1387840497724424204</p>
-        <p><strong>Known for:</strong> Skid, Wannabe Hacker, Misinformation Spreader</p>
-        <p>Ianfv is known across gaming communities for pretending to be a hacker but failing to demonstrate any real technical ability. He often makes empty threats and buys into fake information himself, making him more of a nuisance than an actual threat.</p>
-        <p>Despite claiming to have technical skills, he has been caught multiple times believing and sharing false rumors, often used to discredit or intimidate others. His lack of critical thinking fuels unnecessary panic and drama within esports spaces.</p>
-        <p><strong>Important:</strong> Always verify before believing — something Ianfv clearly fails at.</p>
+        <p><strong>Known for:</strong> Skid, Wannabe Hacker, Misinformation Magnet</p>
+
+        <p>Ianfv has become a laughingstock across gaming communities for trying (and failing) to act like a hacker. His antics include posting empty threats, buying into obvious scams, and pretending to "dox" people with information anyone could find in 5 seconds.</p>
+
+        <p>Despite acting like he's some digital menace, Ianfv constantly falls for fake leaks and ends up sharing misinformation like it's gospel truth. He’s less of a threat and more of a walking cautionary tale on what not to become — a self-proclaimed "cyber-god" who gets outsmarted by middle schoolers.</p>
+
+        <p><strong>Bottom Line:</strong> If you're ever worried about Ianfv, just ask yourself: is my toaster smarter than him? The answer is probably yes.</p>
 
         <!-- Collapsible Image Section -->
         <button class="collapsible">Toggle Evidence Screenshots</button>
         <div class="collapse-content">
           <div class="screenshots">
+            <!-- Replace these paths with actual image URLs when ready -->
             <img src="image0.jpg" alt="Screenshot of Ianfv threatening users">
             <img src="image1.webp" alt="Ianfv believing and spreading fake info">
           </div>
