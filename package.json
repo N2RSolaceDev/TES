@@ -1,7 +1,7 @@
 {
-  "name": "caught-wiki",
+  "name": "esportscene",
   "version": "1.0.0",
-  "description": "Esports exposé site",
+  "description": "Coming Soon Page for The Esports Scene",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
