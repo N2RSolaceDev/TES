@@ -113,7 +113,7 @@
     }
 
     .screenshots {
-      margin-top: 30px;
+      margin-top: 20px;
     }
 
     .screenshots img {
@@ -123,6 +123,35 @@
       display: block;
       border: 1px solid #0f0;
       border-radius: 6px;
+    }
+
+    /* Collapsible Button */
+    .collapsible {
+      background-color: #222;
+      color: #0f0;
+      cursor: pointer;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      outline: none;
+      text-align: left;
+      font-size: 1rem;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .collapsible:hover {
+      background-color: #333;
+    }
+
+    .collapse-content {
+      overflow: hidden;
+      transition: max-height 0.4s ease-out;
+      max-height: 0;
+    }
+
+    .collapse-content.open {
+      max-height: 500px; /* Adjust based on expected content height */
     }
   </style>
 </head>
@@ -156,17 +185,19 @@
       <div class="exposed-card">
         <h2>Ianfv</h2>
         <p><strong>Discord ID:</strong> 1387840497724424204</p>
-        <p><strong>Known for:</strong> Skid, Wannabe Doxxer, Misinformation Spreader</p>
-        <p>Ianfv is known across gaming communities for not only pretending to be a doxxer but also for falling victim to fake information himself. Despite his claims of having technical knowledge, he has been caught multiple times believing and sharing false rumors, often used to discredit or intimidate others.</p>
-        <p>This includes claiming individuals have “leaked personal data” when no such thing occurred, and accusing others of being “doxxed publicly” based on completely fabricated sources. His lack of critical thinking fuels unnecessary panic and drama within esports spaces.</p>
+        <p><strong>Known for:</strong> Skid, Wannabe Hacker, Misinformation Spreader</p>
+        <p>Ianfv is known across gaming communities for pretending to be a hacker but failing to demonstrate any real technical ability. He often makes empty threats and buys into fake information himself, making him more of a nuisance than an actual threat.</p>
+        <p>Despite claiming to have technical skills, he has been caught multiple times believing and sharing false rumors, often used to discredit or intimidate others. His lack of critical thinking fuels unnecessary panic and drama within esports spaces.</p>
         <p><strong>Important:</strong> Always verify before believing — something Ianfv clearly fails at.</p>
-      </div>
 
-      <!-- Evidence Images -->
-      <div class="screenshots">
-        <h2>Evidence</h2>
-        <img src="image0.jpg" alt="Screenshot of Ianfv threatening users">
-        <img src="image1.webp" alt="Ianfv believing and spreading fake info">
+        <!-- Collapsible Image Section -->
+        <button class="collapsible">Toggle Evidence Screenshots</button>
+        <div class="collapse-content">
+          <div class="screenshots">
+            <img src="image0.jpg" alt="Screenshot of Ianfv threatening users">
+            <img src="image1.webp" alt="Ianfv believing and spreading fake info">
+          </div>
+        </div>
       </div>
 
     </section>
@@ -177,6 +208,16 @@
   <p class="footer">
     hosted at <a href="https://caught.wiki " target="_blank">caught.wiki</a>
   </p>
+
+  <script>
+    // Toggle collapse functionality
+    document.querySelectorAll('.collapsible').forEach(button => {
+      button.addEventListener('click', () => {
+        const content = button.nextElementSibling;
+        content.classList.toggle('open');
+      });
+    });
+  </script>
 
 </body>
 </html>
