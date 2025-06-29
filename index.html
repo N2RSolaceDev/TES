@@ -56,43 +56,36 @@
       text-align: left;
     }
 
-    .comment-section {
+    .exposed-section {
       margin-top: 60px;
     }
 
-    input[type="email"],
-    textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border: none;
-      background-color: #222;
-      color: #0f0;
-      resize: vertical;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      background-color: #0f0;
-      color: #000;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .comments {
-      margin-top: 30px;
+    .exposed-card {
+      background-color: #111;
+      border: 1px solid #0f0;
+      padding: 20px;
+      border-radius: 6px;
+      margin: 20px auto;
+      max-width: 500px;
       text-align: left;
+      animation: glow 2s infinite alternate;
     }
 
-    .comment {
-      background-color: #1a1a1a;
-      padding: 15px;
-      margin-top: 15px;
-      border-left: 3px solid #0f0;
+    @keyframes glow {
+      from { box-shadow: 0 0 5px #0f0; }
+      to { box-shadow: 0 0 15px #0f0; }
+    }
+
+    .exposed-card h2 {
+      color: #0f0;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .exposed-card p {
       color: #ccc;
       font-size: 0.95rem;
+      margin-bottom: 10px;
     }
 
     .footer {
@@ -111,6 +104,12 @@
       font-size: 1rem;
       color: #aaa;
       margin-top: 60px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
     }
   </style>
 </head>
@@ -127,17 +126,16 @@
       No logs • No ads • No nonsense.
     </div>
 
-    <!-- Comment Form -->
-    <section class="comment-section">
-      <h2>Leave a Comment</h2>
-      <form id="commentForm">
-        <input type="email" id="email" placeholder="Your email" required />
-        <textarea id="message" rows="4" placeholder="Your comment..." required></textarea>
-        <button type="submit">Post Comment</button>
-      </form>
+    <!-- Exposed Individual Card -->
+    <section class="exposed-section">
+      <h2>Exposed by Solace</h2>
 
-      <!-- Display Comments -->
-      <div class="comments" id="comments"></div>
+      <div class="exposed-card">
+        <h2>Melt</h2>
+        <p><strong>Known for:</strong> Fraud, Doxxing, Abuse, P3do Behavior</p>
+        <p>Melt was a team owner who faked his income, lied about having a job, and used doxxing as leverage to control underage members. He targeted teenagers with threats and harassment to keep them in line or remove them from teams.</p>
+        <p>This abuse continued unchecked until he was publicly exposed by Solace, revealing years of manipulation and unethical conduct within competitive esports circles.</p>
+      </div>
     </section>
 
     <div class="scroll-hint">↓ Stay Tuned ↓</div>
@@ -146,85 +144,6 @@
   <p class="footer">
     hosted at <a href="https://caught.wiki " target="_blank">caught.wiki</a>
   </p>
-
-  <!-- JavaScript to Handle Comments -->
-  <script>
-    const form = document.getElementById('commentForm');
-    const commentsDiv = document.getElementById('comments');
-
-    // Load existing comments on page load
-    async function loadComments() {
-      try {
-        const res = await fetch('/comments');
-        const data = await res.json();
-        commentsDiv.innerHTML = '';
-
-        if (data.length === 0) {
-          commentsDiv.innerHTML = '<p>No comments yet.</p>';
-          return;
-        }
-
-        data.forEach(comment => {
-          const div = document.createElement('div');
-          div.className = 'comment';
-          div.innerHTML = `
-            <strong>${escapeHTML(comment.email)}</strong> said:<br/>
-            ${escapeHTML(comment.message)}<br/>
-            <small>${new Date(comment.createdAt).toLocaleString()}</small>
-          `;
-          commentsDiv.appendChild(div);
-        });
-      } catch (err) {
-        console.error("Failed to load comments:", err);
-      }
-    }
-
-    // Sanitize user input
-    function escapeHTML(str) {
-      return str.replace(/[&<>"']/g, m => ({
-        '&': '&amp;',
-        '<': '<',
-        '>': '>',
-        '"': '&quot;',
-        "'": '&#039;'
-      }[m]));
-    }
-
-    // Submit new comment
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const email = document.getElementById('email').value.trim();
-      const message = document.getElementById('message').value.trim();
-
-      if (!email || !message) {
-        alert("Please fill both fields.");
-        return;
-      }
-
-      try {
-        const res = await fetch('/comment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, message })
-        });
-
-        const result = await res.json();
-        if (result.success) {
-          form.reset();
-          loadComments(); // Refresh comments
-        } else {
-          alert(result.message || "Failed to post comment.");
-        }
-      } catch (err) {
-        console.error("Error posting comment:", err);
-        alert("An error occurred.");
-      }
-    });
-
-    // Load comments on page load
-    loadComments();
-  </script>
 
 </body>
 </html>
